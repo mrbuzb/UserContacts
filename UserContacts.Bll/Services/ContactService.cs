@@ -20,7 +20,6 @@ public class ContactService(IContactRepository _contactRepo,IValidator<ContactCr
         return new Contact
         {
             Address = contactCreateDto.Address,
-            CreatedAt = contactCreateDto.CreatedAt, 
             Email = contactCreateDto.Email,
             FirstName = contactCreateDto.FirstName,
             LastName = contactCreateDto.LastName,
@@ -51,6 +50,7 @@ public class ContactService(IContactRepository _contactRepo,IValidator<ContactCr
         }
         var contactEntity = Converter(contactCreateDto);
         contactEntity.UserId = userId;
+        contactEntity.CreatedAt = DateTime.UtcNow;
         return await _contactRepo.AddContactAsync(contactEntity);
     }
 

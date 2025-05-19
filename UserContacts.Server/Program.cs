@@ -17,7 +17,7 @@ namespace UserContacts.Server
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -26,20 +26,7 @@ namespace UserContacts.Server
             builder.ConfigurationJwtAuth();
             builder.ConfigureJwtSettings();
             builder.ConfigureSerilog();
-
-            builder.Services.AddScoped<IContactRepository, ContactRepository>();
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
-            builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-            builder.Services.AddScoped<IAuthService, AuthService>();
-            builder.Services.AddScoped<IContactService, ContactService>();
-            builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-            builder.Services.AddScoped<IRoleService, RoleService>();
-            builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddScoped<ITokenService, TokenService>();
-            builder.Services.AddScoped<IValidator<UserCreateDto>, UserCreateDtoValidator>();
-            builder.Services.AddScoped<IValidator<UserLoginDto>, UserLoginDtoValidator>();
-            builder.Services.AddScoped<IValidator<ContactCreateDto>, ContactCreateDtoValidator>();
-            builder.Services.AddScoped<IValidator<ContactDto>, ContactDtoValidator>();
+            builder.Services.ConfigureDependecies();
 
             var app = builder.Build();
             app.MapAuthEndpoints();
