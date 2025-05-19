@@ -10,7 +10,7 @@ using UserContacts.Repository.Settings;
 
 namespace UserContacts.Bll.Services;
 
-public class AuthService(IValidator<UserCreateDto> _validator, IUserRepository _userRepo, ITokenService _tokenService, JwtAppSettings _jwtSetting, IValidator<UserCreateDto> _validatorForLogin, IRefreshTokenRepository _refTokRepo) : IAuthService
+public class AuthService(IRoleRepository _roleRepo,IValidator<UserCreateDto> _validator, IUserRepository _userRepo, ITokenService _tokenService, JwtAppSettings _jwtSetting, IValidator<UserCreateDto> _validatorForLogin, IRefreshTokenRepository _refTokRepo) : IAuthService
 {
     private readonly int Expires = int.Parse(_jwtSetting.Lifetime);
     public async Task<long> SignUpUserAsync(UserCreateDto userCreateDto)
@@ -32,8 +32,8 @@ public class AuthService(IValidator<UserCreateDto> _validator, IUserRepository _
             PhoneNumber = userCreateDto.PhoneNumber,
             Password = tupleFromHasher.Hash,
             Salt = tupleFromHasher.Salt,
-            RoleId = 1,
         };
+        user.RoleId =await _roleRepo.GetRoleIdAsync("User");
 
         return await _userRepo.InsertUserAync(user);
     }

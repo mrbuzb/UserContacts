@@ -24,7 +24,7 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
         builder.Property(r => r.Description)
                .HasMaxLength(250);
 
-        builder.HasMany(r => r.User)
+        builder.HasMany(r => r.Users)
                .WithOne(u => u.Role)
                .HasForeignKey(u => u.RoleId)
                .OnDelete(DeleteBehavior.Restrict);

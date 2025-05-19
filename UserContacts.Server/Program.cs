@@ -32,6 +32,8 @@ namespace UserContacts.Server
             builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IContactService, ContactService>();
+            builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+            builder.Services.AddScoped<IRoleService, RoleService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IValidator<UserCreateDto>, UserCreateDtoValidator>();
@@ -43,6 +45,7 @@ namespace UserContacts.Server
             app.MapAuthEndpoints();
             app.MapUserEndpoints();
             app.MapContactEndpoints();
+            app.MapRoleEndpoints();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
