@@ -31,7 +31,6 @@ public class ExceptionHandlingMiddleware
     {
         var code = 500;
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = code;
 
         if(exception is EntityNotFoundException)
         {
@@ -46,7 +45,9 @@ public class ExceptionHandlingMiddleware
             code = 403;
         }
 
-            var response = new
+        context.Response.StatusCode = code;
+
+        var response = new
             {
                 StatusCode = context.Response.StatusCode,
                 Message = "Serverda xatolik yuz berdi. Iltimos, keyinroq urinib ko‘ring.",
