@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using UserContacts.Core.Errors;
 
 namespace UserContacts.Server.Middlewares;
 public class ExceptionHandlingMiddleware
@@ -28,15 +29,29 @@ public class ExceptionHandlingMiddleware
 
     private Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
+        var code = 500;
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        context.Response.StatusCode = code;
 
-        var response = new
+        if(exception is EntityNotFoundException)
         {
-            StatusCode = context.Response.StatusCode,
-            Message = "Serverda xatolik yuz berdi. Iltimos, keyinroq urinib ko‘ring.",
-            Detail = exception.Message
-        };
+            code = 404;
+        }
+        else if (exception is AuthException || exception is UnauthorizedException)
+        {
+            code = 401;
+        }
+        else if (exception is ForbiddenException || exception is NotAllowedException)
+        {
+            code = 403;
+        }
+
+            var response = new
+            {
+                StatusCode = context.Response.StatusCode,
+                Message = "Serverda xatolik yuz berdi. Iltimos, keyinroq urinib ko‘ring.",
+                Detail = exception.Message
+            };
 
         var json = JsonSerializer.Serialize(response);
         return context.Response.WriteAsync(json);
