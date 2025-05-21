@@ -25,8 +25,5 @@ public class ContactCreateDtoValidator : AbstractValidator<ContactCreateDto>
         RuleFor(x => x.Address)
             .MaximumLength(200).WithMessage("Manzil 200 belgidan oshmasligi kerak");
 
-        RuleFor(x => x.CreatedAt)
-            .LessThanOrEqualTo(DateTime.Now)
-            .WithMessage("Yaratilgan vaqt hozirgi vaqtdan oldin bo‘lishi kerak");
     }
 }

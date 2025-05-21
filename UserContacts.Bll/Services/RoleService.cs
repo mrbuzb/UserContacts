@@ -4,14 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage.Json;
+using Microsoft.Extensions.Caching.Memory;
 using UserContacts.Bll.Dtos;
 using UserContacts.Dal.Entities;
 using UserContacts.Repository.Services;
 
 namespace UserContacts.Bll.Services;
 
-public class RoleService(IRoleRepository _roleRepo) : IRoleService
+public class RoleService(IRoleRepository _roleRepo,IMemoryCache _cache) : IRoleService
 {
+
+    private const string _cacheKey = "roles_list";
     private RoleGetDto Converter(UserRole role)
     {
         return new RoleGetDto
@@ -37,7 +40,24 @@ public class RoleService(IRoleRepository _roleRepo) : IRoleService
     }
     public async Task<List<RoleGetDto>> GetAllRolesAsync()
     {
-        var roles =await _roleRepo.GetAllRolesAsync();
+        List<UserRole> roles;
+        if (_cache.TryGetValue(_cacheKey, out List<UserRole> cachedRoles))
+        {
+            roles = cachedRoles!;
+        }
+        else
+        {
+            roles = await _roleRepo.GetAllRolesAsync();
+        }
+
+
+
+        _cache.Set(_cacheKey, roles, new MemoryCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(20),
+            SlidingExpiration = TimeSpan.FromMinutes(15)
+        });
+
         return roles.Select(Converter).ToList();
     }
 

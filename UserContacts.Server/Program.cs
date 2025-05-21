@@ -16,8 +16,15 @@ namespace UserContacts.Server
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            //builder.WebHost.ConfigureKestrel(options =>
+            //{
+            //    options.ListenAnyIP(5000); // Hamma IP-lardan 5000-portda qabul qiladi
+            //});
+
+
+
             // Add services to the container.
-            
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -27,8 +34,11 @@ namespace UserContacts.Server
             builder.ConfigureJwtSettings();
             builder.ConfigureSerilog();
             builder.Services.ConfigureDependecies();
-
+            builder.Services.AddMemoryCache();
+            builder.Services.AddMemoryCache();
             var app = builder.Build();
+
+           
             app.MapAuthEndpoints();
             app.MapUserEndpoints();
             app.MapContactEndpoints();
@@ -39,6 +49,10 @@ namespace UserContacts.Server
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseMiddleware<RequestDurationMiddleware>();
+            //app.UseMiddleware<NightBlockMiddleware>();
+            app.UseMiddleware<MaintenanceMiddleware>();
+            app.UseMiddleware<GeoBlockMiddleware>();
             app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
 
