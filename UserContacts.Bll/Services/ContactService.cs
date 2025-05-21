@@ -54,10 +54,7 @@ public class ContactService(IContactRepository _contactRepo,IValidator<ContactCr
         return await _contactRepo.AddContactAsync(contactEntity);
     }
 
-    public async Task DeleteContactAsync(long contactId, long userId)
-    {
-        await _contactRepo.DeleteContactAsync(contactId, userId);
-    }
+    public async Task DeleteContactAsync(long contactId, long userId) => await _contactRepo.DeleteContactAsync(contactId, userId);
 
     public async Task<List<ContactDto>> GetAllContactsAsync(long userId)
     {
@@ -65,12 +62,7 @@ public class ContactService(IContactRepository _contactRepo,IValidator<ContactCr
         return contacts.Select(_=>Converter(_)).ToList();
     }
 
-    public async Task<ContactDto> GetContactByIdAsync(long contactId, long userId)
-    {
-        var contact = await _contactRepo.GetContactByIdAsync(contactId, userId);
-        return Converter(contact);
-    }
-
+    public async Task<ContactDto> GetContactByIdAsync(long contactId, long userId) => Converter(await _contactRepo.GetContactByIdAsync(contactId, userId));
     public async Task UpdateContactAsync(ContactDto contactDto, long userId)
     {
         var res = _updateDtoValidator.Validate(contactDto);

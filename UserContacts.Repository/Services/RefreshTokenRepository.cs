@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UserContacts.Core.Errors;
 using UserContacts.Dal;
 using UserContacts.Dal.Entities;
 
@@ -12,8 +13,14 @@ public class RefreshTokenRepository(MainContext _mainContext) : IRefreshTokenRep
         await _mainContext.SaveChangesAsync();
     }
 
-    public async Task<RefreshToken> SelectRefreshToken(string refreshToken, long userId)
+    public async Task DeleteRefreshToken(string refreshToken)
     {
-        return await _mainContext.RefreshTokens.FirstOrDefaultAsync(rt => rt.Token == refreshToken && rt.UserId == userId);
+        var token = _mainContext.RefreshTokens.FirstOrDefaultAsync(rt => rt.Token == refreshToken);
+        if(token == null)
+        {
+            throw new EntityNotFoundException();
+        }
     }
+
+    public async Task<RefreshToken> SelectRefreshToken(string refreshToken, long userId) => await _mainContext.RefreshTokens.FirstOrDefaultAsync(rt => rt.Token == refreshToken && rt.UserId == userId);
 }

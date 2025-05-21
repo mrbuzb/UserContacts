@@ -61,10 +61,7 @@ public class RoleService(IRoleRepository _roleRepo,IMemoryCache _cache) : IRoleS
         return roles.Select(Converter).ToList();
     }
 
-    public async Task<long> GetRoleIdAsync(string role)
-    {
-        return await _roleRepo.GetRoleIdAsync(role);
-    }
+    public async Task<long> GetRoleIdAsync(string role) => await _roleRepo.GetRoleIdAsync(role);
 
     public async Task<ICollection<UserGetDto>> GetAllUsersByRoleAsync(string role)
     {

@@ -5,20 +5,20 @@ using UserContacts.Repository.Services;
 
 namespace UserContacts.Bll.Services;
 
-public class UserService(IUserRepository UserRepository, MainContext _context) : IUserService
+public class UserService(IUserRepository _userRepository, MainContext _context) : IUserService
 {
     public async Task DeleteUserByIdAsync(long userId, string userRole)
     {
         if (userRole == "SuperAdmin")
         {
-            await UserRepository.DeleteUserByIdAsync(userId);
+            await _userRepository.DeleteUserByIdAsync(userId);
         }
         else if (userRole == "Admin")
         {
-            var user = await UserRepository.SelectUserByIdAync(userId);
+            var user = await _userRepository.SelectUserByIdAync(userId);
             if (user.Role.Name == "User")
             {
-                await UserRepository.DeleteUserByIdAsync(userId);
+                await _userRepository.DeleteUserByIdAsync(userId);
             }
             else
             {
@@ -27,8 +27,5 @@ public class UserService(IUserRepository UserRepository, MainContext _context) :
         }
     }
 
-    public async Task UpdateUserRoleAsync(long userId, string userRole)
-    {
-        await UserRepository.UpdateUserRoleAsync(userId, userRole);
-    }
+    public async Task UpdateUserRoleAsync(long userId, string userRole) => await _userRepository.UpdateUserRoleAsync(userId, userRole);
 }

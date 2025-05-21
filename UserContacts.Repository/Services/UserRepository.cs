@@ -55,18 +55,9 @@ public class UserRepository(MainContext _mainContext) : IUserRepository
 
     public Task<bool> CheckUserById(long userId) => _mainContext.Users.AnyAsync(x => x.UserId == userId);
 
-    public Task<bool> CheckUsernameExists(string username)
-    {
-        return _mainContext.Users.AnyAsync(_ => _.UserName == username);
-    }
+    public Task<bool> CheckUsernameExists(string username) => _mainContext.Users.AnyAsync(_ => _.UserName == username);
 
-    public Task<bool> CheckEmailExists(string email)
-    {
-        return _mainContext.Users.AnyAsync(_ => _.Email == email);
-    }
+    public Task<bool> CheckEmailExists(string email) => _mainContext.Users.AnyAsync(_ => _.Email == email);
 
-    public Task<bool> CheckPhoneNumberExists(string phoneNum)
-    {
-        return _mainContext.Users.AnyAsync(_ => _.PhoneNumber == phoneNum);
-    }
+    public Task<bool> CheckPhoneNumberExists(string phoneNum) => _mainContext.Users.AnyAsync(_ => _.PhoneNumber == phoneNum);
 }

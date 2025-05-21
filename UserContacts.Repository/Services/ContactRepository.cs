@@ -26,10 +26,7 @@ public class ContactRepository(MainContext _mainContext) : IContactRepository
         await _mainContext.SaveChangesAsync();
     }
 
-    public async Task<List<Contact>> GetAllContactsAsync(long userId)
-    {
-        return await _mainContext.Contacts.Where(_ => _.UserId == userId).ToListAsync();
-    }
+    public async Task<List<Contact>> GetAllContactsAsync(long userId) => await _mainContext.Contacts.Where(_ => _.UserId == userId).ToListAsync();
 
     public async Task<Contact> GetContactByIdAsync(long contactId, long userId)
     {

@@ -24,11 +24,19 @@ public static class AuthEndpoints
         })
         .WithName("Login");
 
-        userGroup.MapPost("/refresh-token",
+        userGroup.MapPut("/refresh-token",
         async (RefreshRequestDto refresh,IAuthService _service) =>
         {
             return Results.Ok(await _service.RefreshTokenAsync(refresh));
         })
-        .WithName("RefreshToken");
+        .WithName("RefreshToken1");
+
+        userGroup.MapDelete("/log-out",
+        async (string refreshToken,IAuthService _service) =>
+        {
+            await _service.LogOut(refreshToken);
+            return Results.Ok();
+        })
+        .WithName("LogOut");
     }
 }

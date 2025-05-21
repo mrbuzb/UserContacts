@@ -8,22 +8,22 @@ public class ContactCreateDtoValidator : AbstractValidator<ContactCreateDto>
     public ContactCreateDtoValidator()
     {
         RuleFor(x => x.FirstName)
-            .NotEmpty().WithMessage("Ism majburiy")
-            .MaximumLength(100).WithMessage("Ism 100 belgidan oshmasligi kerak");
+            .NotEmpty().WithMessage("Name is requaired")
+            .MaximumLength(100).WithMessage("Name must be less then 100");
 
         RuleFor(x => x.LastName)
-            .MaximumLength(100).WithMessage("Familiya 100 belgidan oshmasligi kerak");
+            .MaximumLength(100).WithMessage("Name must be less then 100");
 
         RuleFor(x => x.PhoneNumber)
-            .NotEmpty().WithMessage("Telefon raqam majburiy")
-            .Matches(@"^\+?\d{9,15}$").WithMessage("Telefon raqam noto‘g‘ri formatda");
+            .NotEmpty().WithMessage("PhoneNumber is requaired")
+            .Matches(@"^\+?\d{9,15}$").WithMessage("PhoneNumber is incorrect form");
 
         RuleFor(x => x.Email)
-            .EmailAddress().WithMessage("Email noto‘g‘ri formatda")
+            .EmailAddress().WithMessage("Email is incorrect form")
             .When(x => !string.IsNullOrEmpty(x.Email));
 
         RuleFor(x => x.Address)
-            .MaximumLength(200).WithMessage("Manzil 200 belgidan oshmasligi kerak");
+            .MaximumLength(200).WithMessage("Location must less then 200 chars");
 
     }
 }

@@ -12,10 +12,7 @@ namespace UserContacts.Repository.Services;
 
 public class RoleRepository(MainContext _context) : IRoleRepository
 {
-    public async Task<List<UserRole>> GetAllRolesAsync()
-    {
-        return await _context.UserRoles.ToListAsync();
-    }
+    public async Task<List<UserRole>> GetAllRolesAsync() => await _context.UserRoles.ToListAsync();
 
     public async Task<ICollection<User>> GetAllUsersByRoleAsync(string role)
     {
